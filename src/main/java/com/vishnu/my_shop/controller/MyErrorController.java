@@ -3,7 +3,7 @@ package com.vishnu.my_shop.controller;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.http.HttpServletRequest;
@@ -12,7 +12,7 @@ import jakarta.servlet.http.HttpServletRequest;
 public class MyErrorController implements ErrorController{
 	
 	
-	@GetMapping("/error")
+	@RequestMapping("/error")
     public String handler(HttpServletRequest request) {
 		Object status=request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
 		int code=(Integer)status;

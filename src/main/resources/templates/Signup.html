@@ -1,97 +1,106 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <style>
-        body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f4f4f4;
-}
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>MyShop - Sign Up</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+	<style>
+		body {
+			background-color: #f8f9fa;
+			font-family: 'Arial', sans-serif;
+			margin: 0;
+			padding: 0;
+		}
 
-.signup-container {
-    max-width: 400px;
-    margin: 100px auto;
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
+		.container {
+			max-width: 400px;
+			margin: 30px auto;
+			padding: 20px;
+			background-color: #ffffff;
+			border-radius: 5px;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+		}
 
-form {
-    display: flex;
-    flex-direction: column;
-}
+		h2 {
+			color: #28a745;
+		}
 
-label {
-    margin-bottom: 8px;
-}
+		.form-group {
+			margin-bottom: 20px;
+		}
 
-input,
-textarea {
-    padding: 10px;
-    margin-bottom: 16px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-}
+		label {
+			font-weight: bold;
+		}
 
-button {
-    background-color: #333;
-    color: #fff;
-    padding: 10px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-button:hover {
-    background-color: #555;
-}
-
-p {
-    text-align: center;
-    margin-top: 16px;
-}
-
-a {
-    color: #333;
-    text-decoration: none;
-}
-
-a:hover {
-    text-decoration: underline;
-}
-    </style>
+		footer {
+			background-color: #343a40;
+			color: #ffffff;
+			padding: 15px;
+			position: fixed;
+			bottom: 0;
+			width: 100%;
+		}
+	</style>
 </head>
+
 <body>
-    <div class="signup-container">
-        <form action="" method="post">
-            <h2>Create an Account</h2>
-            <label for="firstname">First Name:</label>
-            <input type="text" id="firstname" name="firstname" required>
+	<div class="container">
+		<h2>Sign Up</h2>
+		<form action="/signup" method="post" th:object="${customer}" >
+			<div class="form-group">
+				<label for="name">Name:</label>
+				<input type="text" class="form-control" id="name"  name="name" placeholder="Enter your name" th:field="*{name}" required>
+				<span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+			</div>
+			<div class="form-group">
+				<label for="mobile">Mobile:</label>
+				<input type="tel" class="form-control" id="mobile"  name="mobile" placeholder="Enter your mobile number" th:field="*{mobile}" required>
+				<span th:if="${#fields.hasErrors('mobile')}" th:errors="*{mobile}"></span>
+				
+			</div>
+			<div class="form-group">
+				<label for="email">Email:</label>
+				<input type="email" class="form-control" id="email"  name="email" placeholder="Enter your email" th:field="*{email}" required>
+				<span th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>	
+				
+			</div>
+			<div class="form-group">
+				<label for="password">Password:</label>
+				<input type="password" class="form-control"  id="password" name="password"  placeholder="Enter your password" required>
+				<span th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
+				
+			</div>
+			<div class="form-group">
+				<label for="dob">Date of Birth:</label>
+				<input type="date" class="form-control" id="dob"  name="dob"  required>
+				<span th:if="${#fields.hasErrors('dob')}" th:errors="*{dob}"></span>
+			</div>
+			<div class="form-group">
+				<label for="gender">Gender:</label>
+				<select class="form-control" id="gender" name="gender"  required>
+					<option value="" disabled selected>Select your gender</option>
+					<option value="male">Male</option>
+					<option value="female">Female</option>
+					<option value="other">Other</option>
+				</select>
+                <span th:if="${#fields.hasErrors('gender')}" th:errors="*{gender}"></span>
+				
+			</div>
+			<div class="d-flex justify-content-between align-items-center">
+				<a href="/" class="btn btn-secondary">Back</a>
+				<button type="submit" class="btn btn-success">Sign Up</button>
+			</div>
+		</form>
+	</div>
 
-            <label for="lastname">Last Name:</label>
-            <input type="text" id="lastname" name="lastname" required>
+	<footer class="py-3 text-center"> &copy; 2024 vishnuMyShop </footer>
 
-            <label for="mobile">Mobile:</label>
-            <input type="tel" id="mobile" name="mobile" required>
-
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
-
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required>
-
-            <label for="address">Address:</label>
-            <textarea id="address" name="address" rows="4" required></textarea>
-
-            <button type="submit">Sign Up</button>
-        </form>
-
-        <p>Already have an account? <a href="/signin">Sign In</a></p>
-    </div>
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 </body>
+
 </html>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1 th:text="${successMessage}"></h1>
+     <h1 th:text="${failMessage}"></h1>
+    <form action="/verify-otp" method="post">
+        <fieldset>
+            <input type="hidden" th:value="${id}" name="id">
+            <label for="">Enter otp here</label><br><br>
+            <input type="number" name="otp"><br><br>
+            <button >Submit</button><br><br>
+           <a th:href="'/resend-otp/'+${id}"><button type="button">Resend OTP</button></a>
+        </fieldset>
+    </form>
+
+</body>
+</html>
