@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.vishnu.my_shop.dto.Customer;
 import com.vishnu.my_shop.service.CustomerService;
 
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
 
@@ -60,8 +61,8 @@ public class GeneralController {
 	
 	
 	@PostMapping("/verify-otp")
-	public String verifyOtp(@RequestParam int id,@RequestParam int otp,ModelMap map) {
-		return customerService.verifyOtp(id,otp,map);
+	public String verifyOtp(@RequestParam int id,@RequestParam int otp,ModelMap map,HttpSession session) {
+		return customerService.verifyOtp(id,otp,map,session);
 	}
 	
 	@GetMapping("/resend-otp/{id}")
@@ -69,5 +70,16 @@ public class GeneralController {
 		return customerService.resendOtp(id,map);
 	}
 	
+	@PostMapping("/signin")
+	public String login(@RequestParam String email,@RequestParam String password,ModelMap map,HttpSession session) {
+		return customerService.login(email,password,map,session);
+	}
+	
+	@GetMapping("/logout")
+	public String logout(HttpSession session) {
+		session.removeAttribute("customer");
+		session.setAttribute("successMessage","Logout Success");
+		return "redirect:/";
+	}
 	
 }

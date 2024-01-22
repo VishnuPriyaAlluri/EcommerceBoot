@@ -13,6 +13,7 @@ import com.vishnu.my_shop.helper.AES;
 import com.vishnu.my_shop.helper.MailSendingHelper;
 import com.vishnu.my_shop.service.CustomerService;
 
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
 
@@ -52,20 +53,21 @@ public class CustomerServiceImp implements CustomerService {
 		mailHelper.sendOtp(customer);
 		customerDao.save(customer);
 		map.put("id",id);
-		map.put("successMEssage","Otp Sent Seuccess");
+		map.put("successMessage","Otp Sent Seuccess");
 		return "VerifyOtp";
 	}
    
    @Override
-	public String verifyOtp(int id,int otp,ModelMap map) {
+	public String verifyOtp(int id,int otp,ModelMap map,HttpSession session) {
 		Customer customer = customerDao.findById(id);
 		if(customer.getOtp()==otp) {
 		customer.setVerified(true);
-			map.put("successMessage","Otp Verification Success");
-			return "SignIn";
+		customerDao.save(customer);
+		session.setAttribute("successMessage","Account Crated Success");
+			return "redirect:/signin";
 		}
 		else {
-			map.put("failMessage", "Incorrect Otp Try again");
+			map.put("failMessage", "Invalid Otp, Try again");
 			map.put("id",id);
 			return "VerifyOtp";
 		}
@@ -85,7 +87,30 @@ public String resendOtp(int id, ModelMap map) {
 }
 
 
+@Override
+public String login(String email, String password, ModelMap map, HttpSession session) {
+	    Customer customer= customerDao.findByEmail(email);
+	    if(customer==null)
+	    {
+	    	session.setAttribute("failMessage","Invalid Email");
+	    }
+	    else {
+	    	if(AES.decrypt(customer.getPassword(), "123").equals(password)) {
+	    		
+	    		if(customer.isVerified()) {
+	    			session.setAttribute("customer", customer);
+	    			session.setAttribute("successMessage","Login Success");
+	    			return "redirect:/";
+	    		}
+	    		else {
+	    			return resendOtp(customer.getId(),map);
+	    		}
+	    	}
+	    	else {
+	    		session.setAttribute("failMessage","Incorrect Password");
+	    	}
+	    }
+	    return "signin";
+}
 
-	
-    
 }

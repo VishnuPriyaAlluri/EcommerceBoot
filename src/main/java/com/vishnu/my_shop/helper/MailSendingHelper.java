@@ -18,7 +18,7 @@ public class MailSendingHelper {
 
 	@Autowired
 	JavaMailSender mailSender;
-	public void resendOtp(Customer customer) {
+	public void sendOtp(Customer customer) {
 		MimeMessage message=mailSender.createMimeMessage();
 		MimeMessageHelper helper=new MimeMessageHelper(message);
 		
@@ -42,7 +42,7 @@ public class MailSendingHelper {
 		
 	}
 
-	public void sendOtp(Customer customer) {
+	public void resendOtp(Customer customer) {
 		MimeMessage message=mailSender.createMimeMessage();
 		MimeMessageHelper helper=new MimeMessageHelper(message);
 		

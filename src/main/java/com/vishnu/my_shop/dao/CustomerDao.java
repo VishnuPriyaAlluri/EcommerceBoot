@@ -38,4 +38,11 @@ public class CustomerDao {
 	public Customer findById(int id) {
 		return customerRepository.findById(id).orElseThrow();
 	}
+
+
+
+
+	public Customer findByEmail(String email) {
+		return customerRepository.findByEmail(email);
+	}
 }

@@ -5,6 +5,7 @@ import org.springframework.validation.BindingResult;
 
 import com.vishnu.my_shop.dto.Customer;
 
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
 public interface CustomerService {
@@ -13,7 +14,7 @@ public interface CustomerService {
 
 	
 
-	String verifyOtp(int id, int otp, ModelMap map);
+	String verifyOtp(int id, int otp, ModelMap map, HttpSession session);
 
 
 
@@ -22,5 +23,9 @@ public interface CustomerService {
 
 
 	String resendOtp(int id, ModelMap map);
+
+
+
+	String login(String email, String password, ModelMap map, HttpSession session);
 
 }
