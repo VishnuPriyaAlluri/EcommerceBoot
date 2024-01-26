@@ -13,7 +13,7 @@
     <th:block th:text="${@sessionMessageRemover.removeMessage()}"></th:block>
 
  <div class="add-product">
-    <form action="/admin/add-product" method="post" th:object="${product}">
+    <form action="/admin/add-product" method="post" enctype="multipart/form-data" th:object="${product}">
         <div class="form_group">
         <label for="name">Name</label>
         <input type="text" name="name" th:field="*{name}">
@@ -39,6 +39,10 @@
         <label for="description">Description</label>
         <textarea name="description" id="" cols="30" rows="5" th:field="*{description}"></textarea>
         <span class="error-message" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></span>
+        </div>
+        <div class="form_group">
+            <label for="picture">Product Picture</label>
+            <input type="file" name="picture" required/>
         </div>
         <div class="btn_block">
         <button type="submit">Add</button>
