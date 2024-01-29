@@ -57,6 +57,7 @@
 <body>
   <th:block class="alert alert-success" th:if="${session.successMessage}" role="alert" th:text="${session.successMessage}"></th:block>
 	<th:block class="alert alert-danger" th:if="${session.failMessage}" role="alert" th:text="${session.failMessage}"></th:block>
+  <th:block th:text="${@sessionMessageRemover.removeMessage()}"></th:block>
     <header>
         <h1>My Ecommerce Store</h1>
       </header>

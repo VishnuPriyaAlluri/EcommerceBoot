@@ -5,9 +5,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.vishnu.my_shop.dto.Product;
@@ -41,10 +43,39 @@ public class AdminController {
 	  
 	   if (result.hasErrors()) {
 		  
-		  System.out.println("hello errors is there check first");
+		  //System.out.println("hello errors is there check first");
 		  return "AddProduct";
 	   }
 	   	else
 	   return adminService.addProduct(product,result,picture,session,map);
+   }
+   
+   @GetMapping("/manage-product")
+   public String managePRoducts(HttpSession session,ModelMap map) {
+	   return adminService.manageProducts(session,map);
+   }
+   
+   @GetMapping("/delete-product/{id}")
+   public String deleteProduct(@PathVariable int id,HttpSession session,ModelMap map) {
+	   return adminService.deleteProduct(id,session,map);
+   }
+   
+  
+   @GetMapping("/edit-product/{id}")
+   public String loadEditProduct(@PathVariable int id,HttpSession session,ModelMap map) {
+	   return adminService.loadEditProduct(id,session,map);
+   }
+   
+   @PostMapping("/update-product")
+   
+   public String updateProduct(@Valid Product product, BindingResult result,@RequestParam MultipartFile picture, HttpSession session,ModelMap map) {
+	  
+	   if (result.hasErrors()) {
+		  
+		 // System.out.println("hello errors is there check first");
+		  return "EditProduct";
+	   }
+	   	else
+	   return adminService.updateProduct(product,result,picture,session,map);
    }
 }

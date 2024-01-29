@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -111,6 +112,123 @@ public class AdminServiceImp implements AdminService{
 					}
 					session.setAttribute("successMessage","Product Added Successfully");
 					return "redirect:/admin";
+				
+				}
+			}
+			else {
+				session.setAttribute("failMessage","You Are Unauthorized to Access This URL");
+				return "redirect:/";
+			}
+		}
+	}
+
+	@Override
+	public String manageProducts(HttpSession session, ModelMap map) {
+		Customer customer=(Customer) session.getAttribute("customer");
+		if(customer==null) {
+			session.setAttribute("failMessage","Invalid Session");
+			return "redirect:/signin";
+		}
+		else {
+			if(customer.getRole().equals("ADMIN"))
+			{
+				List<Product> products = productDao.findAll();
+				if (products.isEmpty()) {
+					session.setAttribute("failMessage", "No Products Present");
+					return "redirect:/admin";
+				}else {
+				map.put("products", products);
+				return "ManageProducts";
+				}
+			}
+			else {
+				session.setAttribute("failMessage","You Are Unauthorized to Access This URL");
+				return "redirect:/";
+			}
+		}
+	}
+
+	@Override
+	public String deleteProduct(int id, HttpSession session, ModelMap map) {
+		Customer customer=(Customer) session.getAttribute("customer");
+		if(customer==null) {
+			session.setAttribute("failMessage","Invalid Session");
+			return "redirect:/signin";
+		}
+		else {
+			if(customer.getRole().equals("ADMIN"))
+			{
+				productDao.deleteById(id);
+				map.put("sucessMessage","Product Deleted Success");
+				return manageProducts(session,map);
+				
+			}
+			else {
+				session.setAttribute("failMessage","You Are Unauthorized to Access This URL");
+				return "redirect:/";
+			}
+		}
+	}
+
+	@Override
+	public String loadEditProduct(int id, HttpSession session, ModelMap map) {
+		Customer customer=(Customer) session.getAttribute("customer");
+		if(customer==null) {
+			session.setAttribute("failMessage","Invalid Session");
+			return "redirect:/signin";
+		}
+		else {
+			if(customer.getRole().equals("ADMIN"))
+			{
+				Product product = productDao.findById(id);
+				if(product==null) {
+					map.put("failMessage","No Products Found With this id "+id);
+					return manageProducts(session,map);
+				}else {
+					map.put("product", product);
+					return "EditProduct";
+				}
+				
+			}
+			else {
+				session.setAttribute("failMessage","You Are Unauthorized to Access This URL");
+				return "redirect:/";
+			}
+		}
+	}
+
+	@Override
+	public String updateProduct(Product product, BindingResult result, MultipartFile picture, HttpSession session,ModelMap map) {
+		Customer customer=(Customer) session.getAttribute("customer");
+		if(customer==null) {
+			session.setAttribute("failMessage","Invalid Session");
+			return "redirect:/signin";
+		}
+		else {
+			if(customer.getRole().equals("ADMIN"))
+			{
+				if(productDao.checkByName(product.getName()))
+					result.rejectValue("name","error.name","Product with same name already exists");
+
+				if(result.hasErrors()) {
+					return "EditProduct";
+				}
+				else {
+			        product.setImagePath("/images/"+product.getName()+".jpg");
+					productDao.save(product);
+					
+					File file=new File("src/main/resources/static/images");
+					if(!file.isDirectory())
+						file.mkdir();
+					try {
+						Files.write(Paths.get("src/main/resources/static/images",product.getName()+".jpg"),picture.getBytes());
+					}
+					catch(IOException e) {
+						session.setAttribute("failMessage", "You are unauthorized to access this url");
+						return "redirect:/";
+					}
+					session.setAttribute("successMessage","Product Updated Successfully");
+					return manageProducts(session,map);
 				
 				}
 			}

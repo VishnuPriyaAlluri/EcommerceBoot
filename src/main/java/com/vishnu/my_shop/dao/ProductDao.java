@@ -1,5 +1,7 @@
 package com.vishnu.my_shop.dao;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -18,5 +20,18 @@ public class ProductDao {
 	public void save(Product product) {
 		productRepository.save(product);
 		
+	}
+	
+	public List<Product> findAll(){
+		return productRepository.findAll();
+	}
+
+	public void deleteById(int id) {
+		productRepository.deleteById(id);
+		
+	}
+
+	public Product findById(int id) {
+		return productRepository.findById(id).orElse(null);
 	}
 }
