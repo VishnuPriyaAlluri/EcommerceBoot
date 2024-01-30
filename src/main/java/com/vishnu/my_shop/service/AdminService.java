@@ -19,10 +19,12 @@ public interface AdminService {
 
 	String manageProducts(HttpSession session, ModelMap map);
 
-	String deleteProduct(int id, HttpSession session, ModelMap map);
+	String deleteProduct(int id, HttpSession session);
 
 	String loadEditProduct(int id, HttpSession session, ModelMap map);
 
 	String updateProduct(Product product, BindingResult result, MultipartFile picture, HttpSession session,ModelMap map);
+
+	
 
 }

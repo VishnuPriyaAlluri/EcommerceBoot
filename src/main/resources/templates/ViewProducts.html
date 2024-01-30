@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+                font-family: Arial, sans-serif;
+                background-color: #f4f4f4;
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+    
+            .container {
+                width: 80%;
+                margin: 0 auto;
+                padding-top: 50px;
+                display: flex;
+                justify-content: space-evenly;
+                align-items: center;
+                /* flex-direction: column; */
+                flex-wrap: wrap;
+                
+            }
+    
+            .alert-success,
+            .alert-danger {
+                padding: 10px;
+                margin-bottom: 20px;
+                border-radius: 4px;
+            }
+    
+            .alert-success {
+                background-color: #d4edda;
+                color: #155724;
+                border: 1px solid #c3e6cb;
+            }
+    
+            .alert-danger {
+                background-color: #f8d7da;
+                color: #721c24;
+                border: 1px solid #f5c6cb;
+            }
+    
+            h1 {
+                color: #333;
+                margin-bottom: 20px;
+                text-align: center;
+            }
+    
+            .product-card {
+                margin-bottom: 20px;
+                padding: 0 10px;
+                
+            }
+    
+            .card {
+                border: 1px solid #ddd;
+                border-radius: 8px;
+                transition: box-shadow 0.3s;
+                padding-top: 50px;
+                padding-left: 50px;
+            }
+    
+            .card:hover {
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            }
+    
+            .card-img-top {
+                max-height: 100px;
+                object-fit: cover;
+                border-radius: 8px 8px 0 0;
+            }
+    
+            .card-body {
+                padding: 20px;
+            }
+    
+            .card-title {
+                font-size: 1.25rem;
+                margin-bottom: 10px;
+            }
+    
+            .card-text {
+                color: #555;
+            }
+    
+            .price-stock p {
+                margin-bottom: 5px;
+            }
+    
+            .price-stock span {
+                font-weight: bold;
+            }
+    
+            .btn-container {
+                display: flex;
+                justify-content: space-between;
+            }
+    
+            button {
+                padding: 8px 15px;
+                font-size: 14px;
+                cursor: pointer;
+                background-color: #007bff;
+                color: #fff;
+                border: none;
+                border-radius: 4px;
+            }
+    
+            button:hover {
+                background-color: #0056b3;
+            }
+            
+    </style>
+</head>
+<body>
+    <th:block class="alert alert-success" th:if="${session.successMessage}" role="alert" th:text="${session.successMessage}"></th:block>
+	<th:block class="alert alert-danger" th:if="${session.failMessage}" role="alert" th:text="${session.failMessage}"></th:block>
+    <th:block th:text="${@sessionMessageRemover.removeMessage()}"></th:block>
+    <h1 style="text-align: center;">Manage Products</h1>
+    <div class="container">
+      <div th:each="product:${products}">
+          <div class="col-md-4 product-card">
+              <div class="card">
+                  <img class="card-img-top" th:src="${product.imagePath}" alt="Product Image">
+                  <div class="card-body">
+                      <h5 class="card-title" th:text="${product.name}"></h5>
+                      <p class="card-text" th:text="${product.description}"></p>
+                      <p>Price: <th:block th:text="${product.price}"></th:block>&#8377</p>
+                      <p>Stock: <th:block th:text="${product.stock}"></th:block></p>
+                      <th:block th:if="${session.customer}">
+                        <button th:if="${product.stock==0}" disabled>Out Of Stock</button>
+                        <button th:if="${product.stock>=1}">Add To Cart</button>
+                      </th:block>
+                      <a href="/signin"><button th:if="${session.customer==null}">Login To Buy</button></a>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</body>
+</html>

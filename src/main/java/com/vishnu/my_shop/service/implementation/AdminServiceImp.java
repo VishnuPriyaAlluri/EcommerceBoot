@@ -149,7 +149,7 @@ public class AdminServiceImp implements AdminService{
 	}
 
 	@Override
-	public String deleteProduct(int id, HttpSession session, ModelMap map) {
+	public String deleteProduct(int id, HttpSession session) {
 		Customer customer=(Customer) session.getAttribute("customer");
 		if(customer==null) {
 			session.setAttribute("failMessage","Invalid Session");
@@ -158,9 +158,13 @@ public class AdminServiceImp implements AdminService{
 		else {
 			if(customer.getRole().equals("ADMIN"))
 			{
+				Product product = productDao.findById(id);
+				File file = new File("src/main/resources/static" + product.getImagePath());
+				if (file.exists())
+					file.delete();
 				productDao.deleteById(id);
-				map.put("sucessMessage","Product Deleted Success");
-				return manageProducts(session,map);
+				session.setAttribute("successMessage", "Product Deleted Success");
+				return "redirect:/admin/manage-product";
 				
 			}
 			else {
@@ -207,8 +211,7 @@ public class AdminServiceImp implements AdminService{
 		else {
 			if(customer.getRole().equals("ADMIN"))
 			{
-				if(productDao.checkByName(product.getName()))
-					result.rejectValue("name","error.name","Product with same name already exists");
+				
 
 				if(result.hasErrors()) {
 					return "EditProduct";
@@ -228,7 +231,7 @@ public class AdminServiceImp implements AdminService{
 						return "redirect:/";
 					}
 					session.setAttribute("successMessage","Product Updated Successfully");
-					return manageProducts(session,map);
+					return "redirect:/admin/manage-product";
 				
 				}
 			}
@@ -238,5 +241,8 @@ public class AdminServiceImp implements AdminService{
 			}
 		}
 	}
+
+	
+	
 
 }

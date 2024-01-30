@@ -1,5 +1,6 @@
 package com.vishnu.my_shop.service.implementation;
 
+import java.util.List;
 import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +9,10 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 
 import com.vishnu.my_shop.dao.CustomerDao;
+import com.vishnu.my_shop.dao.ProductDao;
+import com.vishnu.my_shop.dao.ProductDao;
 import com.vishnu.my_shop.dto.Customer;
+import com.vishnu.my_shop.dto.Product;
 import com.vishnu.my_shop.helper.AES;
 import com.vishnu.my_shop.helper.MailSendingHelper;
 import com.vishnu.my_shop.service.CustomerService;
@@ -22,6 +26,9 @@ public class CustomerServiceImp implements CustomerService {
 	
 	@Autowired
 	CustomerDao customerDao;
+	
+	@Autowired
+	ProductDao productDao;
 	
 	@Autowired
 	MailSendingHelper mailHelper;
@@ -111,6 +118,19 @@ public String login(String email, String password, ModelMap map, HttpSession ses
 	    	}
 	    }
 	    return "signin";
+}
+
+
+   @Override
+   public String viewProduct(HttpSession session, ModelMap map) {
+	List<Product> products = productDao.findAll();
+	if (products.isEmpty()) {
+		session.setAttribute("failMessage", "No Products Present");
+		return "redirect:/admin";
+	}else {
+	map.put("products", products);
+	return "ViewProducts";
+	}
 }
 
 }

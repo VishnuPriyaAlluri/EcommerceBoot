@@ -28,4 +28,8 @@ public interface CustomerService {
 
 	String login(String email, String password, ModelMap map, HttpSession session);
 
+
+
+	String viewProduct(HttpSession session, ModelMap map);
+
 }

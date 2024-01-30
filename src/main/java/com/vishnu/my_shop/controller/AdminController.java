@@ -56,8 +56,8 @@ public class AdminController {
    }
    
    @GetMapping("/delete-product/{id}")
-   public String deleteProduct(@PathVariable int id,HttpSession session,ModelMap map) {
-	   return adminService.deleteProduct(id,session,map);
+   public String deleteProduct(@PathVariable int id,HttpSession session) {
+	   return adminService.deleteProduct(id,session);
    }
    
   
@@ -67,15 +67,14 @@ public class AdminController {
    }
    
    @PostMapping("/update-product")
-   
-   public String updateProduct(@Valid Product product, BindingResult result,@RequestParam MultipartFile picture, HttpSession session,ModelMap map) {
+    public String updateProduct(@Valid Product product, BindingResult result,@RequestParam MultipartFile picture, HttpSession session,ModelMap map) {
 	  
 	   if (result.hasErrors()) {
-		  
-		 // System.out.println("hello errors is there check first");
 		  return "EditProduct";
 	   }
 	   	else
 	   return adminService.updateProduct(product,result,picture,session,map);
    }
+   
+   
 }

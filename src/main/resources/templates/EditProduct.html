@@ -79,6 +79,10 @@
         a {
             text-decoration: none;
         }
+        img{
+            height: 150px;
+            width: 150px;
+        }
     
     </style>
 </head>
@@ -89,7 +93,7 @@
             <div class="form_group">
                 <input type="hidden" name="id" th:value="${id}"/>
             <label for="name">Name</label>
-            <input type="text" name="name" th:field="*{name}">
+            <input type="text" name="name" readonly th:field="*{name}">
             <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
             </div>
             <div class="form-group">
@@ -115,7 +119,9 @@
             <div class="form_group">
                 <label for="picture">Product Picture</label>
                 <input type="file" name="picture" required/>
+                <img class="card-img-top" th:src="${product.imagePath}" alt="Product Image">   
             </div>
+           
             <div class="btn_block">
             <button type="submit">Update</button>
             <button type="reset">Reset</button>

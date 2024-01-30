@@ -82,6 +82,11 @@ public class GeneralController {
 		return "redirect:/";
 	}
 	
+	@GetMapping("/products")
+	   public String viewProduct(HttpSession session,ModelMap map) {
+		   return customerService.viewProduct(session,map);
+	   }
+	
 	
 	
 }
