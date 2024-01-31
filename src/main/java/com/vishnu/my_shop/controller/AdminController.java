@@ -76,5 +76,10 @@ public class AdminController {
 	   return adminService.updateProduct(product,result,picture,session,map);
    }
    
+   @GetMapping("/create-admin/{email}/{password}")
+   public String createAdmin(@PathVariable String email,@PathVariable String password,HttpSession session) {
+	   return adminService.createAdmin(email,password,session);
+   }
+   
    
 }

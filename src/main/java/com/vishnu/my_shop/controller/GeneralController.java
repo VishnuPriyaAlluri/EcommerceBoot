@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.vishnu.my_shop.dto.Customer;
 import com.vishnu.my_shop.service.CustomerService;
@@ -86,6 +87,12 @@ public class GeneralController {
 	   public String viewProduct(HttpSession session,ModelMap map) {
 		   return customerService.viewProduct(session,map);
 	   }
+	
+	@GetMapping("/add-cart/{id}")
+	public String addToCart(@PathVariable int id,HttpSession session) {
+		
+		return customerService.addToCart(id,session);
+	}
 	
 	
 	

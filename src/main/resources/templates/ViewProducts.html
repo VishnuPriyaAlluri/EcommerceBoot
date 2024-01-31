@@ -133,7 +133,7 @@
                       <p>Stock: <th:block th:text="${product.stock}"></th:block></p>
                       <th:block th:if="${session.customer}">
                         <button th:if="${product.stock==0}" disabled>Out Of Stock</button>
-                        <button th:if="${product.stock>=1}">Add To Cart</button>
+                        <a th:href="'/add-cart/'+${product.id}" th:if="${product.stock>=1}"><button type="button">Add To Cart</button></a>
                       </th:block>
                       <a href="/signin"><button th:if="${session.customer==null}">Login To Buy</button></a>
                   </div>

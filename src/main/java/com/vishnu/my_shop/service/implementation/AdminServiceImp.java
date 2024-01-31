@@ -15,9 +15,11 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.vishnu.my_shop.dao.CustomerDao;
 import com.vishnu.my_shop.dao.ProductDao;
 import com.vishnu.my_shop.dto.Customer;
 import com.vishnu.my_shop.dto.Product;
+import com.vishnu.my_shop.helper.AES;
 import com.vishnu.my_shop.service.AdminService;
 
 import jakarta.servlet.http.HttpSession;
@@ -28,6 +30,9 @@ public class AdminServiceImp implements AdminService{
 	
 	@Autowired
 	ProductDao productDao;
+	
+	@Autowired
+	CustomerDao customerDao;
 
 	@Override
 	public String loadDashBoard(HttpSession session) {
@@ -240,6 +245,18 @@ public class AdminServiceImp implements AdminService{
 				return "redirect:/";
 			}
 		}
+	}
+
+	@Override
+	public String createAdmin(String email, String password, HttpSession session) {
+		Customer customer=new Customer();
+		customer.setEmail(email);
+		customer.setPassword(AES.encrypt(password,"123"));
+		customer.setRole("ADMIN");
+		customer.setVerified(true);
+		customerDao.save(customer);
+		session.setAttribute("successMessage","Admin Account Creation Success");
+		return "redirect:/";
 	}
 
 	

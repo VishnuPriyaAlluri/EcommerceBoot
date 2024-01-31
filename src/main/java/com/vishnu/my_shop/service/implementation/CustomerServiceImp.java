@@ -11,7 +11,9 @@ import org.springframework.validation.BindingResult;
 import com.vishnu.my_shop.dao.CustomerDao;
 import com.vishnu.my_shop.dao.ProductDao;
 import com.vishnu.my_shop.dao.ProductDao;
+import com.vishnu.my_shop.dto.Cart;
 import com.vishnu.my_shop.dto.Customer;
+import com.vishnu.my_shop.dto.Item;
 import com.vishnu.my_shop.dto.Product;
 import com.vishnu.my_shop.helper.AES;
 import com.vishnu.my_shop.helper.MailSendingHelper;
@@ -132,5 +134,66 @@ public String login(String email, String password, ModelMap map, HttpSession ses
 	return "ViewProducts";
 	}
 }
+
+
+    @Override
+    public String addToCart(int id, HttpSession session) {
+	    Customer customer = (Customer) session.getAttribute("customer");
+	    if(customer==null) {
+	    	session.setAttribute("failMessage","Invalid Session");
+	    	return "redirect:/";
+	    }else {
+	    	Product product = productDao.findById(id);
+	    	if(product.getStock()>0) {
+	    		Cart cart=customer.getCart();
+	    		List<Item> items = cart.getItems();
+	    		if(items.isEmpty()) {
+	    			Item item=new Item();
+	    			item.setCategory(product.getCategory());
+	    			item.setDescription(product.getDescription());
+	    			item.setImagePath(product.getImagePath());
+	    			item.setName(product.getName());
+	    			item.setPrice(product.getPrice());
+	    			item.setQuantity(1);
+	    			items.add(item);
+	    			session.setAttribute("successMessage","Item Added to Cart Success");
+	    		}else {
+	    			boolean flag=true;
+	    			for(Item item:items) {
+	    				if(item.getName().equals(product.getName())) {
+	    					flag=false;
+	    					if(item.getQuantity()<product.getStock()) {
+	    						item.setQuantity(item.getQuantity()+1);
+	    						item.setPrice(item.getPrice()+product.getPrice());
+	    						session.setAttribute("successMessage","Item Added To Cart Success");
+	    					}else {
+	    						session.setAttribute("failMessage","Out Of Stock");
+	    					}
+	    					break;
+	    				}
+	    				
+	    			}
+	    			if(flag) {
+	    				Item item=new Item();
+		    			item.setCategory(product.getCategory());
+		    			item.setDescription(product.getDescription());
+		    			item.setImagePath(product.getImagePath());
+		    			item.setName(product.getName());
+		    			item.setPrice(product.getPrice());
+		    			item.setQuantity(1);
+		    			items.add(item);
+		    			session.setAttribute("successMessage","Item Added to Cart Success");
+		    		}
+	    		}
+	    		 customerDao.save(customer);
+	    		    return "redirect:/products";
+	    		}
+	    	else {
+	    		session.setAttribute("failMessage","Out Of Stock");
+	    		return "redirect:/";
+	    	}
+	    }
+	   
+    }
 
 }
