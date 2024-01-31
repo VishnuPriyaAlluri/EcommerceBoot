@@ -59,7 +59,7 @@ public class CustomerServiceImp implements CustomerService {
 	public String sendOtp(int id, ModelMap map) {
 		Customer customer=customerDao.findById(id);
 		customer.setOtp(new Random().nextInt(100000,999999));
-		mailHelper.sendOtp(customer);
+		//mailHelper.sendOtp(customer);
 		customerDao.save(customer);
 		map.put("id",id);
 		map.put("successMessage","Otp Sent Seuccess");
@@ -195,5 +195,31 @@ public String login(String email, String password, ModelMap map, HttpSession ses
 	    }
 	   
     }
+
+
+	@Override
+	public String viewCart(HttpSession session,ModelMap map) {
+		Customer customer=(Customer) session.getAttribute("customer");
+		if(customer==null) {
+			session.setAttribute("failMessage","Invalid Session");
+			return "redirect:/";
+		}else {
+			Cart cart=customer.getCart();
+			if(cart==null) {
+				session.setAttribute("failMessage","No Cart Found");
+				return "redirect:/";
+			}else {
+				List<Item> items = cart.getItems();
+				if(items.isEmpty()) {
+					session.setAttribute("failMessage","No Items Present");
+					return "redirect:/";
+				}else {
+					map.put("items", items);
+					session.setAttribute("successMessage","Items Found");
+					return "ViewCart";
+				}
+			}
+		}
+	}
 
 }

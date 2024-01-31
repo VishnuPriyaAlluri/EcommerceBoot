@@ -94,6 +94,11 @@ public class GeneralController {
 		return customerService.addToCart(id,session);
 	}
 	
+	@GetMapping("/cart")
+	public String viewCart(HttpSession session,ModelMap map) {
+		return customerService.viewCart(session,map);
+	}
+	
 	
 	
 }
