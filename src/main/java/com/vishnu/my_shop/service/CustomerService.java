@@ -40,4 +40,8 @@ public interface CustomerService {
 
 	String viewCart( HttpSession session, ModelMap map);
 
+
+
+	String removeCart(int id, HttpSession session);
+
 }

@@ -8,8 +8,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 
+
 import com.vishnu.my_shop.dao.CustomerDao;
-import com.vishnu.my_shop.dao.ProductDao;
+import com.vishnu.my_shop.dao.ItemDao;
 import com.vishnu.my_shop.dao.ProductDao;
 import com.vishnu.my_shop.dto.Cart;
 import com.vishnu.my_shop.dto.Customer;
@@ -34,6 +35,11 @@ public class CustomerServiceImp implements CustomerService {
 	
 	@Autowired
 	MailSendingHelper mailHelper;
+	
+	
+	
+	@Autowired
+	ItemDao itemDao;
 
 	@Override
 	public String save(@Valid Customer customer, BindingResult result) {
@@ -186,6 +192,7 @@ public String login(String email, String password, ModelMap map, HttpSession ses
 		    		}
 	    		}
 	    		 customerDao.save(customer);
+	    		 session.setAttribute("customer",customerDao.findById(customer.getId()));
 	    		    return "redirect:/products";
 	    		}
 	    	else {
@@ -202,7 +209,7 @@ public String login(String email, String password, ModelMap map, HttpSession ses
 		Customer customer=(Customer) session.getAttribute("customer");
 		if(customer==null) {
 			session.setAttribute("failMessage","Invalid Session");
-			return "redirect:/";
+			return "redirect:/signin";
 		}else {
 			Cart cart=customer.getCart();
 			if(cart==null) {
@@ -214,12 +221,41 @@ public String login(String email, String password, ModelMap map, HttpSession ses
 					session.setAttribute("failMessage","No Items Present");
 					return "redirect:/";
 				}else {
+					//System.err.println(items);
 					map.put("items", items);
 					session.setAttribute("successMessage","Items Found");
 					return "ViewCart";
 				}
 			}
 		}
+	}
+
+
+	@Override
+	public String removeCart(int id, HttpSession session) {
+		Customer customer = (Customer) session.getAttribute("customer");
+		if(customer==null) {
+			session.setAttribute("failMessage","Invalid Session");
+			return "redirect:/signin";
+		}else {
+		     Item item=itemDao.findById(id);
+		     if(item.getQuantity()==1) {
+		    	 //remove mapping
+		    	 customer.getCart().getItems().remove(item);
+		    	 customerDao.save(customer);
+		    	 session.setAttribute("customer",customerDao.findById(customer.getId()));
+		    	 itemDao.delete(item);
+		    	 session.setAttribute("successMessage","Item Removed From Cart Success");
+		     }else {
+		    	 item.setPrice(item.getPrice()-(item.getPrice()/item.getQuantity()));
+		    	 item.setQuantity(item.getQuantity()-1);
+		    	 itemDao.save(item);
+		    	 session.setAttribute("successMessage","Item Quantity Reduced By 1");
+		     }
+		}
+		session.setAttribute("customer",customerDao.findById(customer.getId()));
+		return "redirect:/cart";
+		
 	}
 
 }
