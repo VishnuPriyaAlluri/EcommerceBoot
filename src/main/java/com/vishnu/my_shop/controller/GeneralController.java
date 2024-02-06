@@ -104,6 +104,11 @@ public class GeneralController {
 		return customerService.removeCart(id,session);
 	}
 	
+	@GetMapping("/payment")
+	public String paymentPage(HttpSession session,ModelMap map) {
+		return customerService.paymentPage(session,map);
+	}
+	
 	
 	
 }

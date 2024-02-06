@@ -44,4 +44,8 @@ public interface CustomerService {
 
 	String removeCart(int id, HttpSession session);
 
+
+
+	String paymentPage(HttpSession session, ModelMap map);
+
 }

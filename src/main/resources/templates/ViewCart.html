@@ -197,9 +197,9 @@
         <a href="/logout">Logout</a>
       </th:block>
       </nav>
-     <div> <th:block class="alert alert-success" th:if="${session.successMessage}" role="alert" th:text="${session.successMessage}"></th:block></div> 
-	   <div> <th:block class="alert alert-danger" th:if="${session.failMessage}" role="alert" th:text="${session.failMessage}"></th:block></div> 
-       <th:block th:text="${@sessionMessageRemover.removeMessage()}"></th:block>
+      <div><th:block class="alert alert-success" th:if="${session.successMessage}" role="alert" th:text="${session.successMessage}"></th:block></div> 
+      <div> <th:block class="alert alert-danger" th:if="${session.failMessage}" role="alert" th:text="${session.failMessage}"></th:block></div> 
+     <th:block th:text="${@sessionMessageRemover.removeMessage()}"></th:block>
     
     <h1 style="text-align: center;">View Cart</h1>
     <div class="container">
@@ -219,6 +219,6 @@
           </div>
       </div>
   </div>
-  <button style="margin-left: 600px;">Proceed To Pay</button>
+  <a href="/payment"><button style="margin-left: 600px;">Proceed To Pay</button></a>
 </body>
 </html>

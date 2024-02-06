@@ -34,4 +34,8 @@ public class ProductDao {
 	public Product findById(int id) {
 		return productRepository.findById(id).orElse(null);
 	}
+
+	public Product findByName(String name) {
+	    return productRepository.findByName(name);
+	}
 }
