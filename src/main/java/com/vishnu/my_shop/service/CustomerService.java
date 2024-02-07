@@ -48,4 +48,12 @@ public interface CustomerService {
 
 	String paymentPage(HttpSession session, ModelMap map);
 
+
+
+	String paymentPage(HttpSession session, int id, String razorpay_payment_id);
+
+
+
+	String viewOrders(HttpSession session, ModelMap map);
+
 }

@@ -15,4 +15,13 @@ public class ShoppingOrderDao {
 		orderRepository.save(myOrder);
 		
 	}
+
+	public ShoppingOrder findOrderById(int id) {
+		return orderRepository.findById(id).orElseThrow();
+	}
+
+	public void saveOrder(ShoppingOrder order) {
+		orderRepository.save(order);
+		
+	}
 }

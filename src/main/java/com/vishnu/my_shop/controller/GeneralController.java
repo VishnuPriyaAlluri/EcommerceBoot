@@ -109,6 +109,17 @@ public class GeneralController {
 		return customerService.paymentPage(session,map);
 	}
 	
+	@PostMapping("/confirm-order/{id}")
+	public String confirmOrder(HttpSession session,@PathVariable int id,@RequestParam String razorpay_payment_id) {
+		return customerService.paymentPage(session,id,razorpay_payment_id);
+	}
+	
+	@GetMapping("/orders")
+	public String viewOrders(HttpSession session,ModelMap map) {
+		return customerService.viewOrders(session,map);
+	}
+
+	
 	
 	
 }

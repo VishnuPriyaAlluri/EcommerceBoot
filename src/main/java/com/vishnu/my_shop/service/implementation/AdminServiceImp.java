@@ -249,6 +249,7 @@ public class AdminServiceImp implements AdminService{
 
 	@Override
 	public String createAdmin(String email, String password, HttpSession session) {
+		if(!customerDao.checkEmailDuplicate(email)) {
 		Customer customer=new Customer();
 		customer.setEmail(email);
 		customer.setPassword(AES.encrypt(password,"123"));
@@ -257,6 +258,10 @@ public class AdminServiceImp implements AdminService{
 		customerDao.save(customer);
 		session.setAttribute("successMessage","Admin Account Creation Success");
 		return "redirect:/";
+		}else {
+			session.setAttribute("failMessage","Admin Account Already Exists");
+			return "redirect:/";
+		}
 	}
 
 	
