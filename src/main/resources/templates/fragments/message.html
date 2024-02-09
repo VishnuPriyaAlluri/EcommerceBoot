@@ -1,0 +1,3 @@
+<div><th:block class="alert alert-success" th:if="${session.successMessage}" role="alert" th:text="${session.successMessage}"></th:block></div> 
+	    <div><th:block class="alert alert-danger" th:if="${session.failMessage}" role="alert" th:text="${session.failMessage}"></th:block></div> 
+      <th:block th:text="${@sessionMessageRemover.removeMessage()}"></th:block>

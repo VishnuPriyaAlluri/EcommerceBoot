@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+
+</head>
+<body>
+    <header>
+        <h1>My Ecommerce Store</h1>
+      </header>
+    
+      <nav>
+        <a href="/">Home</a>
+        <a href="/products">Products</a>
+        
+        <th:block th:if="${session.customer==null}">
+        <a href="/signin">Sign In</a>
+        <a href="/signup">Sign Up</a>
+      </th:block>
+      <th:block th:if="${session.customer}">
+        <th:block th:if="${session.customer.role=='ADMIN'}">
+        <a href="/admin">Admin Dashboard</a>
+      </th:block>
+      <a href="/cart">Cart</a>
+      <a href="/orders">View All Orders</a>
+        <a href="/logout">Logout</a>
+      </th:block>
+      </nav>
+</body>
+</html>

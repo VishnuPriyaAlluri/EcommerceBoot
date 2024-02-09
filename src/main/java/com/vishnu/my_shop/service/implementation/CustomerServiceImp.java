@@ -143,14 +143,20 @@ public String login(String email, String password, ModelMap map, HttpSession ses
 
    @Override
    public String viewProduct(HttpSession session, ModelMap map) {
-	List<Product> products = productDao.findAll();
-	if (products.isEmpty()) {
-		session.setAttribute("failMessage", "No Products Present");
-		return "redirect:/admin";
-	}else {
-	map.put("products", products);
-	return "ViewProducts";
+	Customer customer = (Customer) session.getAttribute("customer");
+	    if(customer==null) {
+	    	session.setAttribute("failMessage","Invalid Session");
+	    	return "redirect:/";
+	    }else{
+	       List<Product> products = productDao.findAll();
+	      if (products.isEmpty()) {
+		  session.setAttribute("failMessage", "No Products Present");
+		  return "redirect:/admin";
+	      }else {
+	     map.put("products", products);
+	     return "ViewProducts";
 	}
+}
 }
 
 
@@ -324,17 +330,24 @@ public String login(String email, String password, ModelMap map, HttpSession ses
 
 
 	@Override
-	public String paymentPage(HttpSession session, int id, String razorpay_payment_id) {
+	public String confirmOrder(HttpSession session, int id, String razorpay_payment_id) {
 		Customer customer=(Customer) session.getAttribute("customer");
 		if(customer==null) {
 			session.setAttribute("failMessage","Invalid Session");
 			return "redirect:signin";
 		}else {
+			for (Item item : customer.getCart().getItems()) {
+				Product product = productDao.findByName(item.getName());
+				product.setStock(product.getStock() - item.getQuantity());
+				productDao.save(product);
+			}
 	         ShoppingOrder order=orderDao.findOrderById(id);
 	         order.setPaymentId(razorpay_payment_id);
 	         order.setStatus("success");
 	         orderDao.saveOrder(order);
+//	         customer.setCart(new Cart());
 	         customer.getCart().setItems(new ArrayList<Item>());
+//	         customer.setCart(new Cart());
 	         customerDao.save(customer);
 	         session.setAttribute("customer",customerDao.findById(customer.getId()));
 	         session.setAttribute("successMessage","Order Placed Success");

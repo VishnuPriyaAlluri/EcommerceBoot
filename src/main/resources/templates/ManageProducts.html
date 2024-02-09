@@ -1,195 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <th:block th:insert="~{fragments/header}"></th:block>
     <title>Manage Products - Admin Dashboard</title>
-    <style>
-    body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        .container {
-            width: 80%;
-            margin: 0 auto;
-            padding-top: 50px;
-            display: flex;
-            justify-content: space-evenly;
-            align-items: center;
-            /* flex-direction: column; */
-            flex-wrap: wrap;
-            
-        }
-
-        .alert-success,
-        .alert-danger {
-            padding: 10px;
-            margin-bottom: 20px;
-            border-radius: 4px;
-        }
-
-        .alert-success {
-            background-color: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
-
-        .alert-danger {
-            background-color: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
-
-        h1 {
-            color: #333;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-
-        .product-card {
-            margin-bottom: 20px;
-            padding: 0 10px;
-            
-        }
-
-        .card {
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            transition: box-shadow 0.3s;
-            padding-top: 50px;
-            padding-left: 50px;
-        }
-
-        .card:hover {
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .card-img-top {
-            max-height: 100px;
-            object-fit: cover;
-            border-radius: 8px 8px 0 0;
-        }
-
-        .card-body {
-            padding: 20px;
-        }
-
-        .card-title {
-            font-size: 1.25rem;
-            margin-bottom: 10px;
-        }
-
-        .card-text {
-            color: #555;
-        }
-
-        .price-stock p {
-            margin-bottom: 5px;
-        }
-
-        .price-stock span {
-            font-weight: bold;
-        }
-
-        .btn-container {
-            display: flex;
-            justify-content: space-between;
-        }
-
-        button {
-            padding: 8px 15px;
-            font-size: 14px;
-            cursor: pointer;
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-        }
-
-        button:hover {
-            background-color: #0056b3;
-        }
-        header {
-      background-color: #333;
-      color: #fff;
-      padding: 10px;
-      text-align: center;
-    }
-    header h1{
-        color: white;
-    }
-
-    nav {
-      background-color: #444;
-      padding: 15px;
-      text-align: center;
-    }
-
-    nav a {
-      color: #fff;
-      text-decoration: none;
-      padding: 10px;
-      margin: 0 10px;
-      font-weight: bold;
-    }
-
-    nav a:hover {
-      background-color: #555;
-      border-radius: 5px;
-    }
-
-    .hero {
-      text-align: center;
-      padding: 50px;
-      background-color: #f4f4f4;
-    }
-
-    footer {
-      background-color: #333;
-      color: #fff;
-      text-align: center;
-      padding: 10px;
-      position: fixed;
-      bottom: 0;
-      width: 100%;
-    }
-        
-
-        
-</style>
+    <link rel="stylesheet" href="/css/displayproducts.css">
+   
 </head>
 <body>
     
-    
-    
-      
-    <header>
-        <h1>My Ecommerce Store</h1>
-      </header>
-    
-      <nav>
-        <a href="/">Home</a>
-        <a href="/products">Products</a>
-        
-        <th:block th:if="${session.customer==null}">
-        <a href="/signin">Sign In</a>
-        <a href="/signup">Sign Up</a>
-      </th:block>
-      <th:block th:if="${session.customer}">
-        <th:block th:if="${session.customer.role=='ADMIN'}">
-        <a href="/admin">Admin Dashboard</a>
-      </th:block>
-      <a href="/cart">Cart</a>
-        <a href="/logout">Logout</a>
-      </th:block>
-      </nav>
-      <div><th:block class="alert alert-success" th:if="${session.successMessage}" role="alert" th:text="${session.successMessage}"></th:block></div> 
-	   <div> <th:block class="alert alert-danger" th:if="${session.failMessage}" role="alert" th:text="${session.failMessage}"></th:block></div> 
-      <th:block th:text="${@sessionMessageRemover.removeMessage()}"></th:block>
+ <th:block th:insert="~{fragments/navbar}"></th:block>
+   <th:block th:insert="~{fragments/message}"></th:block>
     
     
     <h1 style="text-align: center;">Manage Products</h1>
@@ -210,5 +30,6 @@
           </div>
       </div>
   </div>
+  <th:block th:insert="~{fragments/footer}"></th:block>
 </body>
 </html>

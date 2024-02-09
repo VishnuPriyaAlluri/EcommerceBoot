@@ -1,125 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <style>
-       body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            background-color: #f4f4f4;
-            color: #333;
-        }
-
-        header {
-            background-color: #333;
-            color: #fff;
-            text-align: center;
-            padding: 10px;
-        }
-
-        nav {
-            background-color:#444;
-            
-            padding: 10px;
-            text-align: center;
-            
-        }
-
-        nav a {
-            text-decoration: none;
-            color: #fff;
-            margin: 0 10px;
-            font-weight: bold;
-        }
-
-        h2 {
-            text-align: center;
-            margin-top: 30px;
-        }
-
-        form {
-            text-align: center;
-            margin-top: 20px;
-            margin-right: 100px;
-        }
-
-        .btn-block {
-            height: 200px;
-            width: 400px;
-            margin-left:500px;
-            padding: 100px;
-            /* border: 2px solid red; */
-            display: flex;
-            justify-content: space-around;
-        }
-
-        button {
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-            background-color: #3f3f3f;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            margin: 5px;
-        }
-
-        button:hover {
-            background-color:#4f4f2a;
-        }
-
-        footer {
-            background-color: #333;
-            color: #fff;
-            text-align: center;
-            padding: 10px;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-        }
-    </style>
+    <th:block th:insert="~{fragments/header}"></th:block>
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="/css/dashboard.css">
+   
 </head>
 <body>
 
-    <header>
-        <h1>My Ecommerce Store</h1>
-      </header>
-    
-      <nav>
-        <a href="/">Home</a>
-        <a href="/products">Products</a>
-        
-        <th:block th:if="${session.customer==null}">
-        <a href="/signin">Sign In</a>
-        <a href="/signup">Sign Up</a>
-      </th:block>
-      <th:block th:if="${session.customer}">
-        <th:block th:if="${session.customer.role=='ADMIN'}">
-        <a href="/admin">Admin Dashboard</a>
-      </th:block>
-      <a href="/cart">Cart</a>
-        <a href="/logout">Logout</a>
-      </th:block>
-      </nav>
-     <div><th:block class="alert alert-success" th:if="${session.successMessage}" role="alert" th:text="${session.successMessage}"></th:block></div> 
-	   <div> <th:block class="alert alert-danger" th:if="${session.failMessage}" role="alert" th:text="${session.failMessage}"></th:block></div> 
-      <th:block th:text="${@sessionMessageRemover.removeMessage()}"></th:block>
+    <th:block th:insert="~{fragments/navbar}"></th:block>
+    <th:block th:insert="~{fragments/message}"></th:block>
     
          <h2>Welcome to Admin Dashboard!</h2>
       <form action="">
         
-        <div class="btn-block">
+        <div class="container">
        <a href="/admin/add-product"><button type="button">Add Product</button></a>
        <a href="/admin/manage-product"><button type="button">Manage Product</button></a>
     </div>
       
       </form>
-      <footer>
-        <p>&copy; 2024 My Ecommerce Store. All rights reserved.</p>
-      </footer>
+     <th:block th:insert="~{fragments/footer}"></th:block>
 </body>
 </html>

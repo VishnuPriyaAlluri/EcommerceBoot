@@ -111,7 +111,7 @@ public class GeneralController {
 	
 	@PostMapping("/confirm-order/{id}")
 	public String confirmOrder(HttpSession session,@PathVariable int id,@RequestParam String razorpay_payment_id) {
-		return customerService.paymentPage(session,id,razorpay_payment_id);
+		return customerService.confirmOrder(session,id,razorpay_payment_id);
 	}
 	
 	@GetMapping("/orders")
