@@ -47,8 +47,6 @@ public class CustomerServiceImp implements CustomerService {
 	@Autowired
 	ItemDao itemDao;
 	
-	@Autowired
-	ShoppingOrder myOrder;
 	
 	@Autowired
 	ShoppingOrderDao orderDao;
@@ -106,7 +104,7 @@ public String resendOtp(int id, ModelMap map) {
 	Customer customer=customerDao.findById(id);
 	
 	customer.setOtp(new Random().nextInt(100000,999999));
-	mailHelper.resendOtp(customer);
+	//mailHelper.resendOtp(customer);
 	customerDao.save(customer);
 	map.put("id",id);
 	map.put("successMEssage","Otp ReSent Seuccess");
@@ -147,7 +145,7 @@ public String login(String email, String password, ModelMap map, HttpSession ses
 	       List<Product> products = productDao.findAll();
 	      if (products.isEmpty()) {
 		  session.setAttribute("failMessage", "No Products Present");
-		  return "redirect:/admin";
+		  return "redirect:/";
 	      }else {
 	     map.put("products", products);
 	     return "ViewProducts";
@@ -226,27 +224,25 @@ public String login(String email, String password, ModelMap map, HttpSession ses
 			return "redirect:/signin";
 		}else {
 			Cart cart=customer.getCart();
-			if(cart==null) {
-				session.setAttribute("failMessage","No Cart Found");
-				return "redirect:/";
-			}else {
+			
 				List<Item> items = cart.getItems();
 				if(items.isEmpty()) {
-					session.setAttribute("failMessage","No Items Present");
+					session.setAttribute("failMessage","No Items in Cart");
 					return "redirect:/";
 				}else {
 					//System.err.println(items);
+					//session.setAttribute("successMessage","Items Found");
 					map.put("items", items);
-					session.setAttribute("successMessage","Items Found");
+					
 					return "ViewCart";
 				}
-			}
+		
 		}
 	}
 
 
 	@Override
-	public String removeCart(int id, HttpSession session) {
+	public String removeFromCart(int id, HttpSession session) {
 		Customer customer = (Customer) session.getAttribute("customer");
 		if(customer==null) {
 			session.setAttribute("failMessage","Invalid Session");
@@ -268,7 +264,7 @@ public String login(String email, String password, ModelMap map, HttpSession ses
 		     }
 		}
 		session.setAttribute("customer",customerDao.findById(customer.getId()));
-		return "redirect:/";
+		return "redirect:/cart";
 		
 	}
 
@@ -278,7 +274,7 @@ public String login(String email, String password, ModelMap map, HttpSession ses
 		Customer customer=(Customer) session.getAttribute("customer");
 		if(customer==null) {
 			session.setAttribute("failMessage","Invalid Session");
-			return "redirect:signin";
+			return "redirect:/signin";
 		}else {
 			List<Item> items = customer.getCart().getItems();
 			if(items.isEmpty()) {
@@ -293,19 +289,17 @@ public String login(String email, String password, ModelMap map, HttpSession ses
 					orderRequest.put("amount",price*100);
 					orderRequest.put("currency","INR");
 					Order order = razorPay.orders.create(orderRequest);
+					
+					ShoppingOrder myOrder=new ShoppingOrder();
 					myOrder.setDateTime(LocalDateTime.now());
 					myOrder.setItems(items);
 					myOrder.setOrderId(order.get("id"));
 					myOrder.setStatus(order.get("status"));
 					myOrder.setTotalPrice(price);
 					
-					orderDao.save(myOrder);
+					orderDao.saveOrder(myOrder);
 					
-					for(Item item:items) {
-					Product product=productDao.findByName(item.getName());
-					product.setStock(product.getStock()-item.getQuantity());
-					productDao.save(product);
-					}
+					
 					
 					map.put("key","rzp_test_qN732L3UQRx9RT");
 					map.put("myOrder", myOrder);

@@ -11,8 +11,8 @@ public class ShoppingOrderDao {
     @Autowired
     ShoppingOrderRepository orderRepository;
 
-	public void save(ShoppingOrder myOrder) {
-		orderRepository.save(myOrder);
+	public void saveOrder(ShoppingOrder order) {
+		orderRepository.save(order);
 		
 	}
 
@@ -20,8 +20,5 @@ public class ShoppingOrderDao {
 		return orderRepository.findById(id).orElseThrow();
 	}
 
-	public void saveOrder(ShoppingOrder order) {
-		orderRepository.save(order);
-		
-	}
+	
 }

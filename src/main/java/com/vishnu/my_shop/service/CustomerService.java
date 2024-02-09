@@ -42,7 +42,7 @@ public interface CustomerService {
 
 
 
-	String removeCart(int id, HttpSession session);
+	String removeFromCart(int id, HttpSession session);
 
 
 
