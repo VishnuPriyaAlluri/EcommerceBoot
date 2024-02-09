@@ -143,11 +143,7 @@ public String login(String email, String password, ModelMap map, HttpSession ses
 
    @Override
    public String viewProduct(HttpSession session, ModelMap map) {
-	Customer customer = (Customer) session.getAttribute("customer");
-	    if(customer==null) {
-	    	session.setAttribute("failMessage","Invalid Session");
-	    	return "redirect:/";
-	    }else{
+	
 	       List<Product> products = productDao.findAll();
 	      if (products.isEmpty()) {
 		  session.setAttribute("failMessage", "No Products Present");
@@ -155,8 +151,8 @@ public String login(String email, String password, ModelMap map, HttpSession ses
 	      }else {
 	     map.put("products", products);
 	     return "ViewProducts";
-	}
-}
+		  }
+
 }
 
 
